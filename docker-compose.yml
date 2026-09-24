@@ -16,6 +16,13 @@ services:
       - mysql_data:/var/lib/mysql
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
 
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
 
   flask:
     image: pallatinishitha/dockerized-banking-application:latest
@@ -34,7 +41,8 @@ services:
       SECRET_KEY: ${SECRET_KEY}
 
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
 
 volumes:
