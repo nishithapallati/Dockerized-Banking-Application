@@ -6,8 +6,8 @@ services:
     restart: unless-stopped
 
     environment:
-      MYSQL_ROOT_PASSWORD: root123
-      MYSQL_DATABASE: banking_db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
 
     ports:
       - "3306:3306"
@@ -18,7 +18,7 @@ services:
 
 
   flask:
-    build: .
+    image: pallatinishitha/dockerized-banking-application:latest
     container_name: banking-flask
     restart: unless-stopped
 
@@ -28,10 +28,10 @@ services:
     environment:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root123
-      MYSQL_DATABASE: banking_db
-      SECRET_KEY: banking-secret-key
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      SECRET_KEY: ${SECRET_KEY}
 
     depends_on:
       - mysql
