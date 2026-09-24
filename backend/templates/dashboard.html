@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - Banking Application</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Banking Dashboard</h1>
+
+        <h2>Welcome, {{ session["user_name"] }}!</h2>
+
+
+        <!-- ACCOUNT INFORMATION -->
+
+        <div class="balance-card">
+
+            <h3>Account Number</h3>
+
+            <p>{{ account.account_number }}</p>
+
+            <h3>Available Balance</h3>
+
+            <h2>₹{{ account.balance }}</h2>
+
+        </div>
+
+
+        <!-- DEPOSIT -->
+
+        <div class="banking-operation">
+
+            <h3>Deposit Money</h3>
+
+            <form method="POST"
+                  action="{{ url_for('deposit') }}">
+
+                <input
+                    type="number"
+                    name="amount"
+                    placeholder="Enter amount"
+                    min="1"
+                    step="0.01"
+                    required
+                >
+
+                <button type="submit">
+                    Deposit
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- WITHDRAW -->
+
+        <div class="banking-operation">
+
+            <h3>Withdraw Money</h3>
+
+            <form method="POST"
+                  action="{{ url_for('withdraw') }}">
+
+                <input
+                    type="number"
+                    name="amount"
+                    placeholder="Enter amount"
+                    min="1"
+                    step="0.01"
+                    required
+                >
+
+                <button type="submit">
+                    Withdraw
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- TRANSFER -->
+
+        <div class="banking-operation">
+
+            <h3>Transfer Money</h3>
+
+            <form method="POST"
+                  action="{{ url_for('transfer') }}">
+
+                <label>Receiver Account Number</label>
+
+                <input
+                    type="text"
+                    name="receiver_account"
+                    placeholder="Enter receiver account number"
+                    required
+                >
+
+                <label>Amount</label>
+
+                <input
+                    type="number"
+                    name="amount"
+                    placeholder="Enter amount"
+                    min="1"
+                    step="0.01"
+                    required
+                >
+
+                <button type="submit">
+                    Transfer
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- TRANSACTION HISTORY -->
+
+        <div class="transactions">
+
+            <h2>Transaction History</h2>
+
+            {% if transactions %}
+
+            <table border="1">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Type</th>
+
+                        <th>Amount</th>
+
+                        <th>Description</th>
+
+                        <th>Date</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for transaction in transactions %}
+
+                    <tr>
+
+                        <td>
+                            {{ transaction.type }}
+                        </td>
+
+                        <td>
+                            ₹{{ transaction.amount }}
+                        </td>
+
+                        <td>
+                            {{ transaction.description }}
+                        </td>
+
+                        <td>
+                            {{ transaction.created_at }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <p>No transactions yet.</p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- LOGOUT -->
+
+        <div class="logout-section">
+
+            <a href="{{ url_for('logout') }}">
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
